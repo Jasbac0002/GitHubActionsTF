@@ -1,0 +1,52 @@
+name: Challenge1 GithubActions 2
+
+on: push
+
+jobs:
+
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      date_ubuntu: ${{ steps.get_date.outputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print Date on Ubuntu
+        id: get_date
+        run: date
+        continue-on-error: false
+        shell: bash
+
+  job2:
+    runs-on: windows-latest
+    outputs:
+      date_windows: ${{ steps.get_date.outputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print Date on Windows
+        id: get_date
+        run: echo "::set-output name=date::$(Get-Date)"
+        shell: pwsh
+        continue-on-error: false
+
+  job3:
+    runs-on: macos-latest
+    outputs:
+      date_macos: ${{ steps.get_date.outputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print Date on macOS
+        id: get_date
+        run: date
+        continue-on-error: false
+        shell: bash
+
+  job4:
+    runs-on: windows-latest
+    needs: [job1, job2, job3]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print All the Dates from the Previous Jobs
+        run: |
+          echo "Date on Ubuntu: ${{ needs.job1.outputs.date_ubuntu }}"
+          echo "Date on Windows: ${{ needs.job2.outputs.date_windows }}"
+          echo "Date on macOS: ${{ needs.job3.outputs.date_macos }}"

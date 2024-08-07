@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Print Date on Ubuntu
         id: get_date
-        run: date
-        continue-on-error: false
+        run: echo "::set-output name=date::$(date)"
         shell: bash
+        continue-on-error: false
 
   job2:
     runs-on: windows-latest
@@ -36,9 +36,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Print Date on macOS
         id: get_date
-        run: date
-        continue-on-error: false
+        run: echo "::set-output name=date::$(date)"
         shell: bash
+        continue-on-error: false
 
   job4:
     runs-on: windows-latest
